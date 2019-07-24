@@ -4,19 +4,19 @@
 
 <body>
   <div id="app">
-    <demo-input v-model="value"></demo-input>
-    <span>{{ value }}</span>
+    <customer-input v-model="msg"></customer-input>
+    <span>{{msg}}</span>
   </div>
   <script>
-  
-    Vue.components('demo-input', {
-      props: ['value'],
-      template: `<input :value="value" @input="$emit('input', $event.target.value)"/>`
+
+    Vue.component('customer-input', {
+      template: `<input :value="value" @input="$emit('input', $event.target.value)">`,
+      props: ['value']
     })
     new Vue({
       el: '#app',
       data: {
-        value: ''
+        msg: ''
       }
     })
   </script>

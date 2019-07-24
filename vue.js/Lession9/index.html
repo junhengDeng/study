@@ -1,0 +1,22 @@
+<header>
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</header>
+
+<body>
+  <div id="app">
+    <alert-box>
+      Something bad happened!
+    </alert-box>
+  </div>
+  <script>
+    Vue.component('alert-box', {
+      template: `<div class="demo-alert-box">
+        <slot></slot>
+        <strong>Warning</strong>
+      </div>`
+    })
+    new Vue({
+      el: "#app",
+    })
+  </script>
+</body>
