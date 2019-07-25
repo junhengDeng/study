@@ -287,3 +287,7 @@ components: {
 ​	ComponentA                // 是   ComponentA: CompnentA
 
 }
+
+21.![1564031204956](C:\Users\ASUS\AppData\Roaming\Typora\typora-user-images\1564031204956.png)
+
+说明一点，import、require是由webpack,babel来操作文件的
