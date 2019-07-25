@@ -291,3 +291,57 @@ components: {
 21.![1564031204956](C:\Users\ASUS\AppData\Roaming\Typora\typora-user-images\1564031204956.png)
 
 说明一点，import、require是由webpack,babel来操作文件的
+
+22. HTML中的特姓名是大小写不敏感，所以浏览器会将所有大写字符解释为小写字节，所以最好用短横线分割命名     
+
+    如果使用字符串模板，就不会有这个限制
+
+    在prop写 postTitle 在html中要写 post-title
+
+23.
+
+```html
+<!-- 包含该 prop 没有值的情况在内，都意味着 `true`。-->
+<!-- 这是一个表达式而不是字符串 -->
+<blog-post is-published></blog-post>
+```
+
+```html + js
+post: {
+    id: 1,
+    title: 'My dfs'
+}
+
+// 如果要传post所有的属性
+<blog-post v-bind="post"></blog-post>
+// 等价于
+<blog-post v-bind:id="post.id" v-bind:title="post.title"></blog-post>
+```
+
+> 注意那些 prop 会在一个组件实例创建**之前**进行验证，所以实例的属性 (如 `data`、`computed` 等) 在 `default` 或 `validator` 函数中是不可用的。 
+
+24. instanceof 
+
+    Object instanceof constructor
+
+25. 非prop特性
+
+作者不总能遇见组件会被用于什么场景，所以当prop没定义的时候，标签又写了特性，那么这个特性会自动添加到子组件的根元素上（根元素指的是最根的标签）
+
+26.
+
+在这种情况下，我们定义了两个不同的 `class` 的值：
+
+- `form-control`，这是在组件的模板内设置好的
+- `date-picker-theme-dark`，这是从组件的父级传入的
+
+对于绝大多数特性来说，从外部提供给组件的值会替换掉组件内部设置好的值。所以如果传入 `type="text"` 就会替换掉 `type="date"` 并把它破坏！庆幸的是，`class` 和 `style` 特性会稍微智能一些，即两边的值会被合并起来，从而得到最终的值：`form-control date-picker-theme-dark`。
+
+27.有了 `inheritAttrs: false` 和 `$attrs`，你就可以手动决定这些特性会被赋予哪个元素。在撰写[基础组件](https://cn.vuejs.org/v2/style-guide/#%E5%9F%BA%E7%A1%80%E7%BB%84%E4%BB%B6%E5%90%8D-%E5%BC%BA%E7%83%88%E6%8E%A8%E8%8D%90)的时候是常会用到的： 
+
+`inheritAttrs`不让根标签继承属性， `$attrs` 获取属性
+
+注意 `inheritAttrs: false` 选项**不会**影响 `style` 和 `class` 的绑定。 
+
+28.`v-on:myEvent`将会变成`v-on:myevent`--导致myEvent不可能被监听到，因此推荐你使用短连线
+
