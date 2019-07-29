@@ -11,18 +11,18 @@
       inheritAttrs: false,  //不让根标签继承
       props: ['label', 'value'],
       template: `
-    <label>
-      {{ label }}
-      <!-- $attrs 注入的属性 -->
-      <span>
-          <input
-        v-bind="$attrs"
-        v-bind:value="value"
-        v-on:input="$emit('input', $event.target.value)"
-      >
-        </span>
-    </label>
-  `
+        <label>
+          {{ label }}
+          <!-- $attrs 注入的属性 -->
+          <span>
+            <input
+              v-bind="$attrs"
+              v-bind:value="value"
+              v-on:input="$emit('input', $event.target.value)"
+            >
+          </span>
+        </label>
+      `
     })
     new Vue({
       el: "#app",
