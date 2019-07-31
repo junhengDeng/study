@@ -345,3 +345,4 @@ post: {
 
 28.`v-on:myEvent`将会变成`v-on:myevent`--导致myEvent不可能被监听到，因此推荐你使用短连线
 
+29.刚刚测试出一个东西，vue的keep-alive时，来回切换，created不会触发，但是，watch的immediate会触发，$route的监听，会触发两次

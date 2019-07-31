@@ -73,3 +73,15 @@ console.log('module', files(files.keys()[0]) //返回文件的输出
 
 ```
 
+2.npm install -s 和 npm install -d的区别
+
+npm install -s   // npm install --save
+
+npm install -d   // npm install --save-dev
+
+Dependencies是“依赖，附属”的意思    ， dev指的是“开发”
+
+dev会写在devDependencies, 安装的插件只用于开发环境，不可用于生产环境
+
+save会写在Dependencies，需要发布在生产环境
+
