@@ -47,5 +47,47 @@
     6. NaN < 3;  //false  NaN与任何操作符都为false
     ```
 
-    
+17. +加性操作符
+    如果其中有一个是字符串
+    字符串是拼接，
+    对象，数值，布尔值调用toString
+    undefined和null调用String
+
+18. -减性操作符
+    如果其中一个是字符串，
+    数值，字符串，布尔值，undefined,null调用Number
+    对象调用valueof,不行再调用toString最后转化为数值
+
+19. 关系操作符
+    如果两个为数值，
+    如果两个字符串，比较字符编码值
+    如果其中一个是数值，也将另一个转化成数值
+    如果其一是对象，valueof/toString,再转成数值
+    如果其一是布尔，转成数值
+
+20. 相等操作符
+    相等和全等的基本规则
+    如果其一是布尔值，先转化数值
+    如果其一字符串，其一数值，先将字符串转化
+    如果一个是对象，另一个不是，对象调用valueOf，再重新比较
+    相等规则
+    null和undefined相等
+    要比较相等性之前，不能将null和undefined转化
+    NaN跟谁比较都是false
+    两个对象，比较是否指向同一个对象
+
+21. function
+    arguments可以拿到全部传进来的参数，重载功能，根据arguments的长度来做不同的事，但不是真正意义上的重载
+    arguments的值改变，参数也会跟着变，严格模式不会
+
+22. 基本类型和引用类型
+    undefined,null,boolean,number,string（给基本类型定义属性没用）
+    对象
+
+23. 监测类型
+
+    1. typeof
+       1. 监测基本类型比较准
+          1. string，number，boolean，undefined, function
+          2. object(null, object, array)
 
