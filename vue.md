@@ -319,6 +319,8 @@ post: {
 ```
 
 > 注意那些 prop 会在一个组件实例创建**之前**进行验证，所以实例的属性 (如 `data`、`computed` 等) 在 `default` 或 `validator` 函数中是不可用的。 
+>
+> 对象或数组默认值必须从一个工厂函数获取
 
 24. instanceof 
 
@@ -344,4 +346,6 @@ post: {
 注意 `inheritAttrs: false` 选项**不会**影响 `style` 和 `class` 的绑定。 
 
 28.`v-on:myEvent`将会变成`v-on:myevent`--导致myEvent不可能被监听到，因此推荐你使用短连线
+
+29.  init prop 再 init data
 
