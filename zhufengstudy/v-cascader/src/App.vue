@@ -1,76 +1,38 @@
 <template>
-<div>
-  <!-- <div>
-    {{value}}
-  </div> -->
-  <Cascader :options="options" v-model="value"></Cascader>
-</div>
+  <div>
+    <!-- <div>{{options}}</div> -->
+    <cascader :options.sync="options" v-model="value" :lazyload="lazyload"></cascader>
+  </div>
 </template>
 
 <script>
-import Cascader from './components/Cascader.vue'
+import Cascader from "./components/Cascader.vue";
+import cityOptions from "./data.json";
+const fetchOptions = pid => {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      resolve(cityOptions.filter(item => pid == item.pid));
+    }, 100);
+  });
+};
 export default {
-  components: {Cascader},
+  components: {
+    Cascader
+  },
   data() {
     return {
       value: [],
-      options: [
-        {
-          label: '肉类',
-          children: [
-            {
-              label: '猪肉',
-              children: [
-                {
-                  label: '五花肉',
-                },
-                {
-                  label: '里脊肉',
-                },
-              ],
-            },
-            {
-              label: '鸡肉',
-              children: [
-                {
-                  label: '鸡腿',
-                },
-                {
-                  label: '鸡翅',
-                },
-              ],
-            },
-          ],
-        },
-        {
-          label: '蔬菜',
-          children: [
-            {
-              label: '叶菜类',
-              children: [
-                {
-                  label: '大白菜',
-                },
-                {
-                  label: '小白菜',
-                },
-              ],
-            },
-            {
-              label: '根茎类',
-              children: [
-                {
-                  label: '萝卜',
-                },
-                {
-                  label: '土豆',
-                },
-              ],
-            },
-          ],
-        },
-      ],
+      options: []
     };
   },
+  async created() {
+    this.options = await fetchOptions(0);
+  },
+  methods: {
+    async lazyload(id, callback) {
+      let children = await fetchOptions(id);
+      callback(children);
+    }
+  }
 };
 </script>
