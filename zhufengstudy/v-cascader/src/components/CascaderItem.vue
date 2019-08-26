@@ -6,7 +6,7 @@
       </div>
     </div>
     <div class="content-right" v-if="lists && lists.length">
-      <cascader-item :options="lists" :value="value" :level="level + 1" @change="change"></cascader-item>
+      <CascaderItem :options="lists" :level="level + 1" @change="change" :value="value"></CascaderItem>
     </div>
   </div>
 </template>
@@ -15,6 +15,19 @@
 import cloneDeep from "lodash/cloneDeep";
 export default {
   name: "CascaderItem",
+  data() {
+    return {
+      currentItem: null
+    };
+  },
+  computed: {
+    lists() {
+      if (this.value[this.level] && this.value[this.level].id) {
+        return this.options.find(item => this.value[this.level].id === item.id)
+          .children;
+      }
+    }
+  },
   props: {
     options: {
       type: Array,
@@ -27,21 +40,6 @@ export default {
     level: {
       type: Number
     }
-  },
-  computed: {
-    lists() {
-      if (this.value[this.level] && this.value[this.level].id) {
-        let o = this.options.find(
-          item => item.id === this.value[this.level].id
-        );
-        return o.children;
-      }
-    }
-  },
-  data() {
-    return {
-      currentItem: null
-    };
   },
   methods: {
     select(item) {
@@ -57,9 +55,3 @@ export default {
   }
 };
 </script>
-
-<style lang="stylus">
-.label {
-  width: 80px;
-}
-</style>

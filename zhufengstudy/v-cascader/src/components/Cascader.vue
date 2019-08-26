@@ -2,7 +2,7 @@
   <div class="cascader" v-click-outside="close">
     <div class="title" @click="toggle">{{result}}</div>
     <div v-if="isVisable">
-      <cascader-item :options="options" :value="value" :level="0" @change="change"></cascader-item>
+      <CascaderItem :options="options" :value="value" :level="0" @change="change"></CascaderItem>
     </div>
   </div>
 </template>
@@ -20,9 +20,13 @@ export default {
   },
   data() {
     return {
-      currentItem: null,
       isVisable: false
     };
+  },
+  computed: {
+    result() {
+      return this.value.map(item => item.label).join("/");
+    }
   },
   props: {
     options: {
@@ -37,32 +41,7 @@ export default {
       type: Function
     }
   },
-  computed: {
-    result() {
-      return this.value.map(item => item.label).join("/");
-    }
-  },
   methods: {
-    handle(id, children) {
-      let cloneOptions = cloneDeep(this.options);
-      let current;
-      let index = 0;
-      let stack = [...cloneOptions];
-      while ((current = stack[index++])) {
-        if (current.id != id) {
-          if (current.children) {
-            stack = stack.concat(current.children);
-          }
-        } else {
-          break;
-        }
-      }
-      if (current) {
-        current.children = children;
-        this.$emit("update:options", cloneOptions);
-        return { current, cloneOptions };
-      }
-    },
     toggle() {
       this.isVisable = !this.isVisable;
     },
@@ -70,11 +49,30 @@ export default {
       this.isVisable = false;
     },
     change(value) {
-      let id = value[value.length - 1].id;
-      if (this.lazyload) {
-        this.lazyload(id, children => this.handle(id, children));
-      }
       this.$emit("input", value);
+      if (this.lazyload) {
+        let id = value[value.length - 1].id;
+        this.lazyload(id, (children) => this.handle(id, children));
+      }
+    },
+    handle(id, children) {
+      let cloneOptions = cloneDeep(this.options);
+      let index = 0;
+      let stack = [...cloneOptions];
+      let current;
+      while (current = stack[index++]) {
+        if (current.id === id) {
+          break;
+        } else {
+          if (current.children) {
+            stack = stack.concat(current.children);
+          }
+        }
+      }
+      if (current) {
+        current.children = children;
+        this.$emit("update:options", cloneOptions);
+      }
     }
   }
 };
@@ -93,9 +91,13 @@ export default {
 }
 
 .content-left {
-  padding-left: 8px;
   border: 1px solid #ccc;
   height: 150px;
-  overflow: auto;
+  overflow-y: auto;
+}
+
+.label {
+  padding-left: 8px;
+  width: 80px;
 }
 </style>
