@@ -1,0 +1,18 @@
+<header>
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</header>
+
+<body>
+  <div id="app">
+    <div v-bind:class="[{ active: isActive }, errorClass]"></div>
+  </div>
+  <script>
+    let vm = new Vue({
+      el: '#app',
+      data: {
+        activeClass: 'active',
+        errorClass: 'text-danger'
+      }
+    })
+  </script>
+</body>
