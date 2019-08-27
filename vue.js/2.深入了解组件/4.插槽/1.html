@@ -1,0 +1,34 @@
+<header>
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</header>
+
+<body>
+  <div id="app">
+    <current-user v-slot="slotProps">
+      {{slotProps.user.firstName}}
+    </current-user>
+  </div>
+  <script>
+    const CurrentUser = {
+      template: `
+        <span>
+          <slot :user="user">{{ user.lastName }}</slot>
+        </span>
+      `,
+      data() {
+        return {
+          user: {
+            firstName: 'Joe',
+            lastName: 'fda'
+          }
+        }
+      }
+    }
+    new Vue({
+      el: "#app",
+      components: {
+        CurrentUser
+      }
+    })
+  </script>
+</body>
