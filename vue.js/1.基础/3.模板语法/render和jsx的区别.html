@@ -1,0 +1,44 @@
+<header>
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</header>
+
+<body>
+  <div id="app"></div>
+  <div id="app1"></div>
+  <script>
+    // render
+    new Vue({
+      //render: h => h(App)  //App作为根组件在这里渲染
+      render: h => {
+        return h('div', { // 第一个参数div标签，第二个参数传入对象，第三个参数可以传入字符串或者数组
+          attrs: {
+            id: 'box' // html自带的原生属性
+          },
+          style: {
+            color: 'blue'
+          }
+        }, 'abc')
+      }
+    }).$mount('#app')
+
+    //  jsx
+    import RenderDom from '@/components/render-dom'
+    export default {
+      components: {
+        RenderDom
+      },
+      data() {
+        return {
+          number: 88
+        }
+      },
+      methods: {
+        renderFunc(h, num) {
+          return (
+            <div on-click={this.handleClick}>{num}Hello Vue</div>
+          )
+        }
+      }
+    }
+  </script>
+</body>

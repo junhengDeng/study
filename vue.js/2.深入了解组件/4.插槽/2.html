@@ -1,0 +1,45 @@
+<header>
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</header>
+
+<body>
+  <div id="app">
+    <todo-list v-bind:todos="todos">
+      <template v-slot:todo="{ todo }">
+        <span v-if="todo.isComplete">✓</span>
+        {{ todo.text }}
+      </template>
+    </todo-list>
+  </div>
+  <script>
+    const TodoList = {
+      props: ['todos'],
+      template: `
+          <ul>
+            <li
+              v-for="todo in todos"
+              v-bind:key="todo.id"
+            >
+              <!--
+                我们为每个 todo 准备了一个插槽，
+                将 'todo' 对象作为一个插槽的 prop 传入。
+              -->
+              <slot name="todo" v-bind:todo="todo">
+                <!-- 后备内容 -->
+                {{ todo.text }}
+              </slot>
+            </li>
+          </ul>
+      `
+    }
+    new Vue({
+      el: "#app",
+      data: {
+        todos:  [{id:1,text:1,isComplete:true},{id:2,text:2,isComplete:false}] 
+      },
+      components: {
+        TodoList
+      }
+    })
+  </script>
+</body>
