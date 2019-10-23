@@ -1,16 +1,15 @@
-const listener = function(el,bindings) {
-  return function(e){
-    if (e.target === el || el.contains(e.target)) {
-      return;
-    }
-    bindings.value(); //close事件
-  }
-}
+const listener = function(el, bingings) {
+  return function(e) {
+    if (el === e.target || el.contains(e.target)) return;
+    bingings.value();
+  };
+};
+
 export default {
-  inserted(el, bindings) {
-    document.addEventListener('click', listener(el, bindings))
+  inserted(el, bingings) {
+    document.addEventListener("click", listener(el, bingings));
   },
   unbind() {
-    document.removeEventListener('click', listener)
+    document.removeEventListener("click", listener);
   }
 }

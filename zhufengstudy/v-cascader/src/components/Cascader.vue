@@ -1,81 +1,110 @@
 <template>
   <div class="cascader" v-click-outside="close">
     <div class="title" @click="toggle">{{result}}</div>
-    <div v-if="isVisible">
-      <cascader-item :options="options" :value="value" :level="0" @change="change"></cascader-item>
+    <div v-if="isVisable">
+      <cascader-item :options="options" @change="change" :level="0" :value="value"></cascader-item>
     </div>
   </div>
 </template>
 
 <script>
+import cascaderItem from "./CascaderItem.vue";
 import clickOutside from "../directives/clickOutside.js";
-import CascaderItem from "./CascaderItem.vue";
+import cloneDeep from "lodash/cloneDeep";
+
 export default {
   components: {
-    CascaderItem
-  },
-  props: {
-    value: {
-      type: Array,
-      default: () => []
-    },
-    options: {
-      type: Array,
-      default: () => []
-    }
+    cascaderItem
   },
   directives: {
     clickOutside
   },
-  data() {
-    return {
-      isVisible: false
-    };
-  },
   computed: {
     result() {
-      return this.value.map(item => item.label).join("/")
-       
+      return this.value.map(item => item.label).join("/");
+    }
+  },
+  data() {
+    return {
+      isVisable: false
+    };
+  },
+  props: {
+    options: {
+      type: Array,
+      default: () => []
+    },
+    value: {
+      type: Array,
+      default: () => []
+    },
+    lazyload: {
+      type: Function
     }
   },
   methods: {
-    change(value) {
-      this.$emit("input", value);
-    },
-    close() {
-      this.isVisible = false;
+    handle(id, children) {
+      let cloneOptions = cloneDeep(this.options);
+      let stack = [...cloneOptions];
+      let index = 0;
+      let current;
+      while ((current = stack[index++])) {
+        if (current.id !== id) {
+          if (current.children) {
+            stack = stack.concat(current.children);
+          }
+        } else {
+          break;
+        }
+      }
+      if (current) {
+        current.children = children; // 动态的添加儿子节点
+        this.$emit("update:options", cloneOptions);
+      }
     },
     toggle() {
-      this.isVisible = !this.isVisible;
+      this.isVisable = !this.isVisable;
+    },
+    close() {
+      this.isVisable = false;
+    },
+    change(value) {
+      let lastItem = value[value.length - 1];
+      let id = lastItem.id;
+      if (this.lazyload) {
+        this.lazyload(id, (children) => this.handle(id, children));
+      }
+      this.$emit("input", value);
     }
   }
 };
 </script>
 
-<style>
+<style lang="stylus">
 .cascader {
   display: inline-block;
 }
 
-.title {
-  width: 200px;
-  height: 30px;
-  border: 1px solid #ccc;
-  line-height: 30px;
-}
 .content {
   display: flex;
 }
+
+.title {
+  height: 30px;
+  line-height: 30px;
+  width: 150px;
+  border: 1px solid #ccc;
+}
+
 .content-left {
   border: 1px solid #ccc;
   min-height: 150px;
+  max-height: 150px;
+  overflow: auto;
 }
+
 .label {
   width: 80px;
-  padding-left: 5px;
-}
-.label:hover {
-  background: #999;
-  cursor: pointer;
+  padding-left: 10px;
 }
 </style>
