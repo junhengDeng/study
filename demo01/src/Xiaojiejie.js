@@ -1,37 +1,52 @@
-import React, { Component } from 'react'
+import React, {Component} from 'react'
+import './style.css'
 
-class Xiaojiejie extends Component {
+class Xiaojiejie extends Component{
     constructor(props) {
         super(props)
-
         this.state = {
-            inputValue: 'jspang',
-            list: ['头部按摩', '精油推背']
+            inputVal: '',
+            list: [
+                '基础按摩',
+                '精油推油'
+            ]
         }
     }
 
     inputChange(e) {
-        console.log(e.target.value)
-        console.log(this)
         this.setState({
-            inputValue: e.target.value
+            inputVal: e.target.value
         })
     }
 
+    addList() {
+        this.setState({
+            list: [...this.state.list, this.state.inputVal],
+            inputVal: ''
+        })
+    }
 
+    removeItem(idx) {
+        let list = JSON.parse(JSON.stringify(this.state.list)).splice(idx, 1)
+        this.setState({
+            list: list
+        })
+    }
+    
     render() {
         return (
             <div>
-                <div><input value={this.state.inputValue} onChange={this.inputChange.bind(this)} /><button>增加服务</button></div>
+                <input value={this.state.inputVal} onChange={this.inputChange.bind(this)}/><button onClick={this.addList.bind(this)}>增加服务</button>
                 <ul>
-                    <li>头部按摩</li>
-                    <li>精油推背</li>
+                    {
+                        this.state.list.map((it, idx) => {
+                            return <li key={idx+it} onClick={this.removeItem.bind(this,idx)}>{it}</li>
+                        })
+                    }
                 </ul>
             </div>
         )
     }
-
-
 }
 
 export default Xiaojiejie

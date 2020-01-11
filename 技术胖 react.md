@@ -110,4 +110,18 @@
          }
          ```
 
-         
+      6. 循环 `要加key`
+      
+         ```react
+         <ul>
+         	{
+                 this.list.map((it,idx)=>{
+                     return <li key={idx+i}>{it}</li>
+                 })
+             }
+         </ul>
+         ```
+      
+      7. 操作数据的时候，注意不要操作到源数据，最好用setState来操作
+      
+      8. `htmlFor` `className`
