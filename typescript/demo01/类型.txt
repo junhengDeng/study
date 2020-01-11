@@ -1,0 +1,23 @@
+Number
+    特殊的Number类型
+        NaN
+        Infinity
+        -Infinity
+
+String
+
+Boolean
+    只有两种值： true false
+
+enum：数组和对象 很像
+    变量名最好用大写
+
+any: 任何类型
+
+Null： 空类型
+
+void: 空类型
+
+Array： 数组类型
+
+Tuple： 元祖类型
