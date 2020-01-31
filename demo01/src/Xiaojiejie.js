@@ -1,7 +1,11 @@
-import React, {Component} from 'react'
+import React, {
+    Component
+} from 'react'
 import './style.css'
+import XiaojiejieItem from './XiaojiejieItem'
+import axios from 'axios'
 
-class Xiaojiejie extends Component{
+class Xiaojiejie extends Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -13,9 +17,36 @@ class Xiaojiejie extends Component{
         }
     }
 
+    componentWillMount() {
+        console.log('componentWillMount-----组件将挂载页面的时刻')
+    }
+
+    componentDidMount() {
+        console.log('componentDidMount-----组件挂载页面的完成时刻')
+
+        axios.post('https://web-api.juejin.im/v3/web/wbbr/bgeda').then(res => {
+            console.log(res.data)
+        }).catch(err => {
+            console.log(err)
+        })
+    }
+
+
+    shouldComponentUpdate() {
+        console.log('shouldComponentUpdate')
+
+        return true
+    }
+
+    componentWillUpdate() {
+        console.log('componentWillUpdate')
+    }
+
+
+
     inputChange(e) {
         this.setState({
-            inputVal: e.target.value
+            inputVal: this.input.value
         })
     }
 
@@ -23,6 +54,8 @@ class Xiaojiejie extends Component{
         this.setState({
             list: [...this.state.list, this.state.inputVal],
             inputVal: ''
+        }, () => {
+            console.log()
         })
     }
 
@@ -32,19 +65,49 @@ class Xiaojiejie extends Component{
             list: list
         })
     }
-    
+
     render() {
-        return (
-            <div>
-                <input value={this.state.inputVal} onChange={this.inputChange.bind(this)}/><button onClick={this.addList.bind(this)}>增加服务</button>
-                <ul>
-                    {
-                        this.state.list.map((it, idx) => {
-                            return <li key={idx+it} onClick={this.removeItem.bind(this,idx)}>{it}</li>
-                        })
-                    }
-                </ul>
-            </div>
+        console.log('render-----组件挂载中')
+
+        return ( <
+            div >
+            <
+            label htmlFor = "jspang" > < /label> <
+            input id = "jspang"
+            value = {
+                this.state.inputVal
+            }
+            onChange = {
+                this.inputChange.bind(this)
+            }
+            ref = {
+                input => this.input = input
+            }
+            /> <
+            button onClick = {
+                this.addList.bind(this)
+            } > 增加服务 < /button> <
+            ul > {
+                this.state.list.map((it, idx) => {
+                    return ( <
+                        XiaojiejieItem key = {
+                            idx + it
+                        }
+                        content = {
+                            it
+                        }
+                        index = {
+                            idx
+                        }
+                        deleteItem = {
+                            this.removeItem.bind(this)
+                        }
+                        />
+                    )
+                })
+            } <
+            /ul> < /
+            div >
         )
     }
 }
