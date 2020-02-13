@@ -1,0 +1,167 @@
+******* 要非常注意 = 右边是数组或对象， 赋了个新值
+
+1.变量提升与函数提升
+    var a = 3
+    function fn () {
+        console.log(a) // undefined
+        var a = 4
+    }
+    fn()
+
+    console.log(b) // undefined
+    var b = 3
+    fn2()           // fn2()
+    function fn2() {
+        console.log('fn2()')
+    }
+2.执行上下文
+    1.代码位置
+        * 全局代码
+        * 局部代码
+    2.全局执行上下文
+        * 在执行全局代码前将window确定为全局执行上下文
+        * 对全局数据进行预处理
+            * var定义的全局变量==>undefined,添加为window的属性
+            * function声明的全局变量==>赋值（fun),添加为window的方法
+            * this==>赋值（window）
+        * 开始执行全局代码
+    3.函数执行上下文
+        * 在调用函数，准备执行函数体之前，创建对应的函数执行上下文对象
+        * 对局部数据进行预处理
+            * 形参变量==>赋值（实参）==>添加为执行上下文的属性
+            * arguments==>赋值（实参列表），添加为执行上下文的属性
+            * var定义的局部变量==》undefined,添加为执行上i下文的属性
+            * function声明的函数==>赋值（fun),添加为执行上下文的方法
+            * this==>赋值（调用函数的对象）
+        * 开始执行函数体代码
+3.按值传递
+4.this
+    function Person(color) {
+        console.log(this)
+        this.color = color;
+        this.getColor = function () {
+            console.log(this)
+            return this.color
+        }
+        this.setColor = function (color) {
+            console.log(this)
+            this.color = color;
+        }
+    }
+
+    Person("red") // this是谁 window
+
+    var  p = new Person('yellow') // this是谁 新的对象
+
+    p.getColor() // this是谁 p
+
+    var obj = {};
+    p.setColor.call(obj, 'black') // this是谁 obj
+
+    var test = p.setColor
+    test() // this是谁 window
+
+    function fun1() {
+        function fun2() {
+            console.log(this)
+        }
+
+        fun2() // window
+    }
+    fun1() 
+
+    在全局执行环境下，this指向window
+    作为对象中的方法，this指向，包含这个方法的第一层对象
+    a.sayThis()  // a
+    a.b.sayThis() // b
+    
+5.执行顺序
+6.call 和 apply
+7.new
+8.浅克隆和深克隆
+9.判断是数组
+    Object.prototype.toString.call(验证的对象) // [object array] [object object]
+10.prototype（原型，原型链）
+    * 每个函数都有个prototype属性，它默认指向一个Object空对象（原型对象）
+    * 原型对象中有个constructor,它指向函数对象
+    * 实例通过__proto__指向原型，（废弃）用Object.getPrototypeOf(实例) //返回原型
+    * 函数所有的实例对象自动拥有原型中的属性(方法)
+    * 显示原型：函数的prototype  隐式原型：实例的__proto__
+
+    构造函数 ------ prototype/conctructor ------ 原型对象
+        |                                          |
+        |                                          |
+       new                                         |
+        |                                          |
+        |                                          |
+       实例 --------------------------------__proto__
+
+
+    Object为__proto__最大的
+
+
+    //测试题1
+
+        var A=function(){}
+
+        A.prototype.n=1
+
+        var b=new A()
+
+        A.prototype={
+
+        n:2,
+
+        m:3
+
+        }
+
+        var c=new A()
+
+        console.log(b.n,b.m,c.n,c.m)//1,undefined,2,3
+
+
+
+    //测试题2
+
+        var F=function(){};
+
+        Object.prototype.a=function(){
+
+        console.log('a()')
+
+        };
+
+        Function.prototype.b=function(){
+
+        console.log('b()')
+
+        }
+
+        var f=new F();
+
+        f.a()//a()
+
+        f.b()//报错找不到b这个函数
+
+        F.a()//a()
+
+        F.b()//b()
+
+
+11.闭包
+12.所有类型的方法
+13.模式（工厂模式。。。）
+14.es5 和 es6
+15.typescript
+16.webpack
+17.vue vuex 底层 v-model的原理 代理 
+18.react redux 
+19.小程序
+20.网络安全 XSS XSRF
+
+
+
+
+
+

@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+
+    <script>
+
+        // 检验是否是对象的函数
+        function isObject(x) {
+            return Object.prototype.toString.call(x) === '[object Object]'
+        }
+
+        // 在数组列表中，查找是否是相同地址的对象，
+        // 有，返回该对象，否则返回null
+        function find(arr, item) {
+            for(let i = 0; i < arr.length; i++) {
+                if (arr[i].source === item) {
+                    return arr[i];
+                }
+            }
+
+            return null;
+        }
+
+        // 这是个简单的克隆，
+        // 有很多的问题，
+        // 没对参数进行校验
+        // 没对爆栈做处理
+        // 容易陷入死循环
+        function clone(x) {
+            let data = {}
+            let res = data;
+
+            for(var k in x) {
+                if (x.hasOwnProperty(k)) {
+                    res[k] = clone(x[k])
+                } else {
+                    res[k] = x[k]
+                }
+            }
+
+            return res
+        }
+
+        // JSON.parse和JSON.stringify的封装
+        // 里面有递归
+        // 并且有循环检测（防死循环）
+        function cloneJson(x) {
+            return JSON.parse(JSON.stringify(x))
+        }
+
+        // 这里做了防爆栈处理
+        // 只对对象做了克隆
+        // 但是还有防死循环没做
+        function cloneLoop(x) {
+            if(!isObject(x)) return x;
+            const root = {}
+
+            const loopList = [
+                {
+                    parent: root,
+                    key: undefined,
+                    data: x
+                }
+            ]
+
+            while(loopList.length) {
+                const node = loopList.pop();
+                const parent = node.parent;
+                const key = node.key;
+                const data = node.data;
+
+                let temp = parent;
+                // 如果key为undedined
+                if (typeof key !== undefined) {
+                    temp = parent[key] = {} 
+                }
+
+                for (var k in data) {
+                    if (data.hasOwnProperty(k)) {
+                        if (isObject(data[k])) {
+                            loopList.push({
+                                parent: temp,
+                                key: k,
+                                data: data[k]
+                            })
+                        }
+                    } else {
+                        temp[k] = data[k]
+                    }
+                }
+            }
+
+            return root
+        }
+        
+        // 进一步优化
+        // 前一种方法，对象里有相同的引用，会切断引用关系
+        // 这里不会，并且能有防死循环的作用
+        function cloneForce(x) {
+            // 1.防止爆栈
+            // 2.解决引用丢失
+            if(!isObject(x)) return x;
+
+            // =============
+            const uniqueList = []; // 用来去重
+            // =============
+            const root = {};
+            const loopList = [{
+                parent: root,
+                key: undefined,
+                data: x,
+            }]
+
+            while (loopList.length) {
+                const node = loopList.pop();
+                const parent = node.parent;
+                const key = node.key;
+                const data = node.data;
+
+                let res = parent;
+
+                if (typeof key !== 'undefined') {
+                    res = parent[key] = {}
+                }
+
+                let uniqueData = find(uniqueList, data)
+                if (uniqueData) {
+                    parent[key] = uniqueData.target;
+                    break;
+                }
+
+                uniqueList.push({
+                    source: data,
+                    target: res
+                })
+
+                for (var k in data) {
+                    if (data.hasOwnProperty(k)) {
+                        if (isObject(data[k])) {
+                            loopList.push({
+                                parent: res,
+                                key: k,
+                                data: data[k]
+                            })
+                        } else {
+                            res[k] = data[k]
+                        }
+                    }
+                }
+
+                return root;
+            }
+        }
+    
+        // 用来快速创建对象
+        function createData(deep, breadth) {
+            // deep 深度
+            // breadth 广度
+            let data = {}
+            let temp = data;
+
+            for(var i = 0; i < deep; i++){
+                temp = temp['data'] = {}
+                for (var j = 0; j < breadth; j++) {
+                    temp[j] = j
+                }
+            }
+
+            return data
+        }
+
+        // 用来测试性能
+        function test(fn, time) {
+            let count = 0;
+            let startTime = new Date().getTime();
+            while(new Date().getTime - startTime < time) {
+                fn();
+                count++;
+            }
+            return count;
+        }
+
+        test(function () {
+            cloneForce(createData(10000))
+        }, 2000)
+    </script>
+</head>
+
+<body>
+</body>
+
+</html>

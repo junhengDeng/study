@@ -144,7 +144,7 @@
       2. ```
          import PropTypes from 'prop-types'; //引入PropTypes
          
-         XiaojiejieItem.PropTypes = {
+         XiaojiejieItem.propTypes = {
          	content: PropTypes.string,
          	index: PropTypes.Number,
          	deleteItem: PropTypes.func,
@@ -232,13 +232,18 @@
          1. dev开发环境依赖模块
          2. dep生产环境依赖模块
    
-   9. 
+   9. 动画
+   
+      1. `react-transition-group`
+      2. `CSSTransition``TransitionGroup`
    
    10. 
    
    11. 
    
    12. 
+   
+   13. 
    
        
    
