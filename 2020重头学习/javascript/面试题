@@ -80,7 +80,18 @@
 7.new
 8.浅克隆和深克隆
 9.判断是数组
-    Object.prototype.toString.call(验证的对象) // [object array] [object object]
+    Object.prototype.toString.call(验证的对象) 第二个单词都是大写
+    String [object String]
+    Number [object Number]
+    Undefined [object Undefined]
+    Null
+    Boolean
+    Object
+    Array
+    Date
+    RegExp
+
+    为什么要用Object.prototype.toString，而不用[]等自身的toString，因为Array.Function 都重写了toString. 他们的toString都是转换成相对应的字符串，而不是他们的类型
 10.prototype（原型，原型链）
     * 每个函数都有个prototype属性，它默认指向一个Object空对象（原型对象）
     * 原型对象中有个constructor,它指向函数对象
